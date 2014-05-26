@@ -61,26 +61,25 @@ remove(yfiles)
 
 ##   2) Extracts only the measurements on the mean and standard deviation for each measurement. 
 #set needed variables to vars and extract only those columns from the dataset
-vars <- grepl("mean", features$V2) | grepl("std", features$V2)
+vars <- !grepl("Freq", features$V2) & grepl("mean", features$V2) | grepl("std", features$V2)
 vars <- append(c(TRUE, TRUE, TRUE), vars)
-#remove(vars)
 remove(features)
+
+# 5) Creates a second, independent tidy data set with the average of each variable 
+#      for each activity and each subject.
 tidyDataset <- data[,vars]
-
-
-tidyDataset2 <- aggregate(tidyDataset, by=list("subject"=tidyDataset$subject,
+tidyDataset <- aggregate(tidyDataset, by=list("subject"=tidyDataset$subject,
             "activity"=tidyDataset$activity, "activityid"=tidyDataset$activityid), FUN = "mean")
+tidyDataset <- tidyDataset[,-c(3:6)]
 
 
-write.csv(tidyDataset,"tidyDataset.csv")
-write.csv(data,"data.csv")
+######################################
+### Create Output files for Course ###
 
+# Create Tidy Dataset output file
+#write.csv(tidyDataset,"tidyDataset.csv")
+write.table(tidyDataset, "tidyDataset.txt")
 
-
-
-
-#How to make a table with your variables that you can just paste into your markdown CodeBook.md file
+# Create table with variables that you can just paste into your markdown CodeBook.md file
 listOfVariables <- data.frame(names(tidyDataset))
 write.csv(listOfVariables,"listOfVariables.csv")
-
-as.list()
