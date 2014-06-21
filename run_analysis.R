@@ -13,6 +13,7 @@
 # Set WD for personal Use #
 #setwd("C:/Users/Alex/Dropbox/Training/Coursera/3 Getting and Cleaning Data/Project")
 
+## < ANALYSIS > ##
 ## Load Data Labels and headings ##
 labels <- read.table("UCI HAR Dataset/activity_labels.txt", stringsAsFactors = FALSE)
 colnames(labels) <- c("activityid","activity")
@@ -38,7 +39,7 @@ xfiles <-rbind(xtest,xtrain)
 yfiles <-rbind(ytest,ytrain)
 # Join Subject Files
 subjectfiles <- rbind(subjectTest,subjectTrain)
-colnames(sujectfiles) <- c("subject")
+colnames(subjectfiles) <- c("subject")
 #get the entries from features in as the headings for x
 colnames(xfiles) <- features[,2]
 # combine the joined x, the joined y, and the joined subject
@@ -72,6 +73,7 @@ tidyDataset <- aggregate(tidyDataset, by=list("subject"=tidyDataset$subject,
             "activity"=tidyDataset$activity, "activityid"=tidyDataset$activityid), FUN = "mean")
 tidyDataset <- tidyDataset[,-c(3:6)]
 
+## < END ANALYSIS > ##
 
 ######################################
 ### Create Output files for Course ###
